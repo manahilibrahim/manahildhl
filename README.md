@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DHL Express | The logistics company for the world</title>
+    <title>Manahil DHL Express | The logistics company for the world</title>
     <style>
         * {
             margin: 0;
@@ -916,10 +916,10 @@
     <!-- Header -->
     <header class="header">
         <div class="top-bar">
-            📞 Customer Service: 1-800-CALL-DHL | 🌍 Available in 220+ Countries | 🚚 Free Pickup Available
+            📞 Customer Service: 1-800-CALL-MANAHIL-DHL | 🌍 Available in 220+ Countries | 🚚 Free Pickup Available
         </div>
         <div class="nav-container">
-            <a href="#" class="logo">DHL</a>
+            <a href="#" class="logo">Manahil DHL</a>
             <nav>
                 <ul class="nav-menu">
                     <li><a href="#services">Ship Now</a></li>
@@ -957,8 +957,8 @@
                     </button>
                 </form>
                 <div class="sample-tracking">
-                    <strong>Sample tracking numbers:</strong><br>
-                    📦 DHL1234567890 (In Transit) | 📦 DHL0987654321 (Delivered) | 📦 DHL1122334455 (Out for Delivery)
+                    <strong>Try any DHL tracking number:</strong><br>
+                    📦 DHL1234567890 | 📦 DHL0987654321 | 📦 DHL1122334455 | 📦 DHLTEST123
                 </div>
             </div>
         </div>
@@ -1126,8 +1126,8 @@
         <div class="footer-container">
             <div class="footer-top">
                 <div class="footer-brand">
-                    <h3>DHL</h3>
-                    <p>DHL is the global market leader in the logistics industry. We specialize in international express, road and air transport, contract logistics and international mail services.</p>
+                    <h3>Manahil DHL</h3>
+                    <p>Manahil DHL is the global market leader in the logistics industry. We specialize in international express, road and air transport, contract logistics and international mail services.</p>
                     <div class="social-links">
                         <a href="#">📘</a>
                         <a href="#">🐦</a>
@@ -1182,7 +1182,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 DHL International GmbH. All rights reserved.</p>
+                <p>&copy; 2024 Manahil DHL International GmbH. All rights reserved.</p>
                 <div class="footer-links">
                     <a href="#">Privacy Policy</a>
                     <a href="#">Terms of Use</a>
@@ -1197,9 +1197,9 @@
     <div class="chat-widget collapsed" id="chatWidget">
         <div class="chat-header" id="chatHeader">
             <div class="chat-header-left">
-                <div class="chat-avatar">D</div>
+                <div class="chat-avatar">M</div>
                 <div class="chat-title">
-                    <h3>DHL Support</h3>
+                    <h3>Manahil DHL Support</h3>
                     <p id="chatStatus">Online</p>
                 </div>
             </div>
@@ -1258,12 +1258,18 @@
         // Enhanced tracking form functionality
         document.getElementById('trackingForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const trackingNumber = document.getElementById('trackingInput').value.trim();
+            const trackingNumber = document.getElementById('trackingInput').value.trim().toUpperCase();
             const trackBtn = document.getElementById('trackBtnText');
             const loadingSpinner = document.getElementById('trackBtnLoading');
             
             if (!trackingNumber) {
-                alert('⚠️ Please enter a tracking number');
+                showTrackingResult('⚠️ Please enter a tracking number', 'error');
+                return;
+            }
+
+            // Reject very long tracking numbers (more than 20 characters)
+            if (trackingNumber.length > 20) {
+                showTrackingResult(`❌ Tracking number "${trackingNumber}" not found.\n\n💡 Please check your tracking number and try again.`, 'error');
                 return;
             }
 
@@ -1276,36 +1282,174 @@
                 trackBtn.style.display = 'inline';
                 loadingSpinner.style.display = 'none';
 
-                const data = trackingData[trackingNumber.toUpperCase()];
-                
-                if (data) {
-                    let alertMessage = `📦 Tracking Number: ${trackingNumber}\n\n`;
-                    alertMessage += `📍 Status: ${data.status}\n`;
-                    alertMessage += `🚚 From: ${data.from}\n`;
-                    alertMessage += `📍 To: ${data.to}\n`;
-                    
-                    if (data.status === 'Delivered') {
-                        alertMessage += `✅ Delivered to: ${data.deliveredTo}\n`;
-                        alertMessage += `⏰ Delivery time: ${data.deliveryTime}\n`;
-                    } else if (data.status === 'Out for Delivery') {
-                        alertMessage += `🚛 Driver: ${data.driver}\n`;
-                        alertMessage += `⏰ Expected: ${data.expectedDelivery}\n`;
-                    } else {
-                        alertMessage += `📍 Current location: ${data.currentLocation}\n`;
-                        alertMessage += `⏰ Expected: ${data.expectedDelivery}\n`;
-                    }
-                    
-                    alertMessage += `\n📋 Recent Updates:\n`;
-                    data.updates.forEach(update => {
-                        alertMessage += `• ${update.time}: ${update.status} (${update.location})\n`;
-                    });
-                    
-                    alert(alertMessage);
+                // Generate dummy tracking data for any DHL number
+                if (trackingNumber.startsWith('DHL') || trackingNumber.length >= 8) {
+                    generateDummyTrackingData(trackingNumber);
                 } else {
-                    alert(`❌ Tracking number "${trackingNumber}" not found.\n\n💡 Try these sample numbers:\n• DHL1234567890 (In Transit)\n• DHL0987654321 (Delivered)\n• DHL1122334455 (Out for Delivery)`);
+                    showTrackingResult(`❌ Invalid tracking number format. Please enter a valid DHL tracking number.`, 'error');
                 }
             }, 1500);
         });
+
+        function generateDummyTrackingData(trackingNumber) {
+            // Generate random tracking data
+            const statuses = ['In Transit', 'Out for Delivery', 'Delivered', 'Processing', 'Picked Up'];
+            const locations = [
+                { from: 'New York, USA', to: 'London, UK', current: 'Frankfurt Hub, Germany' },
+                { from: 'Mumbai, India', to: 'Dubai, UAE', current: 'Delhi Hub, India' },
+                { from: 'Tokyo, Japan', to: 'Sydney, Australia', current: 'Singapore Hub' },
+                { from: 'London, UK', to: 'New York, USA', current: 'Cincinnati Hub, USA' },
+                { from: 'Dubai, UAE', to: 'Mumbai, India', current: 'Dubai Hub, UAE' },
+                { from: 'Berlin, Germany', to: 'Paris, France', current: 'Frankfurt Hub, Germany' },
+                { from: 'Los Angeles, USA', to: 'Toronto, Canada', current: 'Chicago Hub, USA' },
+                { from: 'Shanghai, China', to: 'Seoul, South Korea', current: 'Hong Kong Hub' }
+            ];
+            
+            const drivers = ['Mike Johnson (#4521)', 'Sarah Wilson (#7823)', 'Ahmed Ali (#3456)', 'Lisa Chen (#9876)', 'Carlos Rodriguez (#2341)'];
+            
+            // Random selection
+            const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+            const randomLocation = locations[Math.floor(Math.random() * locations.length)];
+            const randomDriver = drivers[Math.floor(Math.random() * drivers.length)];
+            
+            // Generate updates based on status
+            let updates = [];
+            const currentTime = new Date();
+            
+            if (randomStatus === 'Delivered') {
+                updates = [
+                    { time: '2 hours ago', location: randomLocation.to, status: `Delivered - Signed by ${['John Smith', 'Mary Johnson', 'David Wilson', 'Sarah Brown'][Math.floor(Math.random() * 4)]}` },
+                    { time: '4 hours ago', location: randomLocation.to, status: 'Out for delivery' },
+                    { time: '1 day ago', location: randomLocation.current, status: 'Departed facility' },
+                    { time: '2 days ago', location: randomLocation.from, status: 'Picked up' }
+                ];
+            } else if (randomStatus === 'Out for Delivery') {
+                updates = [
+                    { time: `${Math.floor(Math.random() * 60) + 10} minutes ago`, location: randomLocation.to, status: 'Out for delivery' },
+                    { time: `${Math.floor(Math.random() * 5) + 2} hours ago`, location: randomLocation.to, status: 'Arrived at delivery facility' },
+                    { time: '1 day ago', location: randomLocation.current, status: 'In transit' },
+                    { time: '2 days ago', location: randomLocation.from, status: 'Picked up' }
+                ];
+            } else if (randomStatus === 'In Transit') {
+                updates = [
+                    { time: `${Math.floor(Math.random() * 3) + 1} hours ago`, location: randomLocation.current, status: 'In transit' },
+                    { time: `${Math.floor(Math.random() * 12) + 6} hours ago`, location: randomLocation.from, status: 'Departed origin facility' },
+                    { time: '1 day ago', location: randomLocation.from, status: 'Picked up' }
+                ];
+            } else {
+                updates = [
+                    { time: `${Math.floor(Math.random() * 2) + 1} hours ago`, location: randomLocation.from, status: randomStatus },
+                    { time: `${Math.floor(Math.random() * 6) + 3} hours ago`, location: randomLocation.from, status: 'Package received' }
+                ];
+            }
+            
+            const trackingData = {
+                status: randomStatus,
+                from: randomLocation.from,
+                to: randomLocation.to,
+                currentLocation: randomLocation.current,
+                expectedDelivery: randomStatus === 'Delivered' ? 'Delivered' : `${Math.floor(Math.random() * 3) + 1} days`,
+                driver: randomStatus === 'Out for Delivery' ? randomDriver : null,
+                updates: updates
+            };
+            
+            showTrackingResult(formatTrackingResult(trackingNumber, trackingData), 'success');
+        }
+
+        function formatTrackingResult(trackingNumber, data) {
+            let resultHtml = `
+                <div style="background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); padding: 25px; margin-top: 20px;">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #f0f0f0;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #D40511, #FFCC00); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">📦</div>
+                        <div>
+                            <h3 style="margin: 0; color: #D40511; font-size: 18px;">Tracking: ${trackingNumber}</h3>
+                            <p style="margin: 5px 0 0 0; color: #666; font-size: 14px;">DHL Express Shipment</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div>
+                            <h4 style="margin: 0 0 10px 0; color: #333; font-size: 14px;">📍 FROM</h4>
+                            <p style="margin: 0; font-weight: bold; color: #D40511;">${data.from}</p>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0 0 10px 0; color: #333; font-size: 14px;">📍 TO</h4>
+                            <p style="margin: 0; font-weight: bold; color: #D40511;">${data.to}</p>
+                        </div>
+                    </div>
+                    
+                    <div style="background: ${data.status === 'Delivered' ? '#d4edda' : data.status === 'Out for Delivery' ? '#fff3cd' : '#cce5ff'}; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: ${data.status === 'Delivered' ? '#28a745' : data.status === 'Out for Delivery' ? '#ffc107' : '#007bff'}; ${data.status !== 'Delivered' ? 'animation: pulse 2s infinite;' : ''}"></div>
+                            <h3 style="margin: 0; color: ${data.status === 'Delivered' ? '#155724' : data.status === 'Out for Delivery' ? '#856404' : '#004085'};">${data.status}</h3>
+                        </div>
+                        ${data.status !== 'Delivered' ? `<p style="margin: 5px 0 0 0; color: #666;">Expected delivery: ${data.expectedDelivery}</p>` : ''}
+                        ${data.driver ? `<p style="margin: 5px 0 0 0; color: #666;">Driver: ${data.driver}</p>` : ''}
+                        ${data.status !== 'Delivered' && data.currentLocation ? `<p style="margin: 5px 0 0 0; color: #666;">Current location: ${data.currentLocation}</p>` : ''}
+                    </div>
+                    
+                    <div>
+                        <h4 style="margin: 0 0 15px 0; color: #333;">📋 Tracking History</h4>
+                        <div style="position: relative;">
+    `;
+    
+    data.updates.forEach((update, index) => {
+        resultHtml += `
+            <div style="display: flex; gap: 15px; margin-bottom: ${index === data.updates.length - 1 ? '0' : '15px'}; position: relative;">
+                <div style="width: 12px; height: 12px; border-radius: 50%; background: #D40511; margin-top: 5px; z-index: 2; position: relative;"></div>
+                ${index !== data.updates.length - 1 ? '<div style="position: absolute; left: 5px; top: 17px; width: 2px; height: 25px; background: #ddd;"></div>' : ''}
+                <div style="flex: 1;">
+                    <p style="margin: 0; font-weight: bold; color: #333; font-size: 14px;">${update.status}</p>
+                    <p style="margin: 2px 0 0 0; color: #666; font-size: 13px;">${update.location} • ${update.time}</p>
+                </div>
+            </div>
+        `;
+    });
+    
+    resultHtml += `
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #f0f0f0; text-align: center;">
+                <p style="margin: 0; color: #666; font-size: 12px;">Need help? Contact Manahil DHL Customer Service: 1-800-CALL-MANAHIL-DHL</p>
+            </div>
+        </div>
+    `;
+    
+    return resultHtml;
+}
+
+function showTrackingResult(content, type) {
+    // Remove existing result
+    const existingResult = document.getElementById('trackingResult');
+    if (existingResult) {
+        existingResult.remove();
+    }
+    
+    // Create new result container
+    const resultContainer = document.createElement('div');
+    resultContainer.id = 'trackingResult';
+    
+    if (type === 'error') {
+        resultContainer.innerHTML = `
+            <div style="background: #f8d7da; color: #721c24; padding: 20px; border-radius: 10px; margin-top: 20px; text-align: center; border: 1px solid #f5c6cb;">
+                <div style="font-size: 48px; margin-bottom: 15px;">❌</div>
+                <div style="white-space: pre-line; line-height: 1.6;">${content}</div>
+            </div>
+        `;
+    } else {
+        resultContainer.innerHTML = content;
+    }
+    
+    // Insert after tracking section
+    const trackingSection = document.querySelector('.tracking-section');
+    trackingSection.parentNode.insertBefore(resultContainer, trackingSection.nextSibling);
+    
+    // Scroll to result
+    setTimeout(() => {
+        resultContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+}
 
         // Tab functionality
         document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -1360,30 +1504,6 @@
             });
         });
 
-        // Simulate real-time notifications
-        setTimeout(() => {
-            if (Math.random() > 0.7) {
-                const notification = document.createElement('div');
-                notification.style.cssText = `
-                    position: fixed;
-                    top: 100px;
-                    right: 20px;
-                    background: #28a745;
-                    color: white;
-                    padding: 15px 20px;
-                    border-radius: 10px;
-                    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-                    z-index: 10000;
-                    animation: slideIn 0.5s ease-out;
-                `;
-                notification.innerHTML = '🎉 Package DHL9988776655 has been delivered to Sydney!';
-                document.body.appendChild(notification);
-                
-                setTimeout(() => {
-                    notification.remove();
-                }, 5000);
-            }
-        }, 3000);
         
         // Chat Widget Functionality
         const chatWidget = document.getElementById('chatWidget');
@@ -1399,7 +1519,7 @@
         const chatResponses = {
             'track_package': {
                 question: 'How do I track my package?',
-                answer: 'You can track your package by entering your tracking number in the tracking box on our homepage. Alternatively, you can use our mobile app or call our customer service at 1-800-CALL-DHL.',
+                answer: 'You can track your package by entering your tracking number in the tracking box on our homepage. Alternatively, you can use our mobile app or call our customer service at 1-800-CALL-MANAHIL-DHL.',
                 followUp: ['lost_package', 'delivery_time', 'tracking_not_working']
             },
             'shipping_rates': {
@@ -1414,12 +1534,12 @@
             },
             'pickup_request': {
                 question: 'How do I schedule a pickup?',
-                answer: 'You can schedule a pickup through our website by logging into your MyDHL+ account, using our mobile app, or calling customer service at 1-800-CALL-DHL. We offer same-day pickup in most major cities if requested before cut-off times.',
+                answer: 'You can schedule a pickup through our website by logging into your MyDHL+ account, using our mobile app, or calling customer service at 1-800-CALL-MANAHIL-DHL. We offer same-day pickup in most major cities if requested before cut-off times.',
                 followUp: ['pickup_cost', 'cancel_pickup', 'business_account']
             },
             'lost_package': {
                 question: 'My package is lost. What should I do?',
-                answer: 'If your tracking hasn\'t updated for 24-48 hours, please contact our customer service team at 1-800-CALL-DHL with your tracking number. We can initiate a package trace and investigation. For international shipments, please allow up to 72 hours for tracking updates.',
+                answer: 'If your tracking hasn\'t updated for 24-48 hours, please contact our customer service team at 1-800-CALL-MANAHIL-DHL with your tracking number. We can initiate a package trace and investigation. For international shipments, please allow up to 72 hours for tracking updates.',
                 followUp: ['file_claim', 'package_insurance', 'track_package']
             },
             'customs_duties': {
@@ -1429,7 +1549,7 @@
             },
             'business_account': {
                 question: 'How do I open a business account?',
-                answer: 'To open a DHL business account, visit our website and complete the business application form or contact our sales team at 1-800-CALL-DHL. Business accounts offer volume discounts, dedicated support, and simplified shipping processes.',
+                answer: 'To open a DHL business account, visit our website and complete the business application form or contact our sales team at 1-800-CALL-MANAHIL-DHL. Business accounts offer volume discounts, dedicated support, and simplified shipping processes.',
                 followUp: ['account_benefits', 'credit_terms', 'volume_discounts']
             },
             'service_types': {
@@ -1449,7 +1569,7 @@
             },
             'contact_support': {
                 question: 'How do I contact customer support?',
-                answer: 'You can contact DHL customer support by calling 1-800-CALL-DHL, using the live chat on our website, emailing customer.service@dhl.com, or visiting one of our service points. Our customer service team is available 24/7 for urgent inquiries.',
+                answer: 'You can contact DHL customer support by calling 1-800-CALL-MANAHIL-DHL, using the live chat on our website, emailing customer.service@dhl.com, or visiting one of our service points. Our customer service team is available 24/7 for urgent inquiries.',
                 followUp: ['business_support', 'complaint_process', 'local_office']
             },
             'tracking_not_working': {
@@ -1506,7 +1626,7 @@
         }
         
         function showWelcomeMessage() {
-            addAgentMessage('👋 Welcome to DHL Customer Support! How can I help you today?');
+            addAgentMessage('👋 Welcome to Manahil DHL Customer Support! How can I help you today?');
             setTimeout(() => {
                 showOptions(currentOptions);
             }, 500);
